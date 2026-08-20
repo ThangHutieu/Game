@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import confetti from "canvas-confetti";
 import { Dices } from "lucide-react";
+import { playDiceRoll, playWinSound } from "../lib/audio";
 
 const targetRotations: Record<number, { x: number; y: number }> = {
   1: { x: 0, y: 0 },
@@ -133,6 +134,9 @@ export default function DiceGame() {
 
   const rollDice = () => {
     if (isRolling) return;
+    
+    playDiceRoll(); // Trigger realistic dice rolling sound
+    
     setIsRolling(true);
     setResult(null);
 
@@ -166,6 +170,7 @@ export default function DiceGame() {
     setRot2({ x: nextX2, y: nextY2, z: nextZ2 });
 
     setTimeout(() => {
+      playWinSound(); // Trigger happy win chime
       setResult(v1 + v2);
       setIsRolling(false);
       confetti({

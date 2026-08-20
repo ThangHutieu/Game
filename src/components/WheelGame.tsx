@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { motion } from "motion/react";
 import confetti from "canvas-confetti";
 import { Settings, Plus, Trash2, PartyPopper } from "lucide-react";
+import { playWheelSpin, playWinSound } from "../lib/audio";
 
 const premiumColors = [
   "#E11D48", // Rose 600
@@ -47,6 +48,9 @@ export default function WheelGame() {
 
   const spinWheel = () => {
     if (isSpinning || options.length === 0) return;
+    
+    playWheelSpin(4500); // Trigger mechanical ticking sound for duration of spin
+    
     setIsSpinning(true);
     setWinner(null);
 
@@ -72,6 +76,7 @@ export default function WheelGame() {
     setRotation(nextRotation);
 
     setTimeout(() => {
+      playWinSound(); // Trigger happy win chime
       setWinner(winningOption);
       setIsSpinning(false);
       confetti({
